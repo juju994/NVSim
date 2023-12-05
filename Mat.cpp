@@ -310,13 +310,16 @@ void Mat::CalculatePower() {
 				+ bitlineMuxPredecoderBlock1.leakage + bitlineMuxPredecoderBlock2.leakage
 				+ senseAmpMuxLev1PredecoderBlock1.leakage + senseAmpMuxLev1PredecoderBlock2.leakage
 				+ senseAmpMuxLev2PredecoderBlock1.leakage + senseAmpMuxLev2PredecoderBlock2.leakage;
+		// SLC
 		readDynamicEnergy += subarray.readDynamicEnergy * numActiveSubarrayPerRow * numActiveSubarrayPerColumn;
 		/* energy consumption on cells */
 		cellReadEnergy = subarray.cellReadEnergy * numActiveSubarrayPerRow * numActiveSubarrayPerColumn;
 		cellSetEnergy = subarray.cellSetEnergy * numActiveSubarrayPerRow * numActiveSubarrayPerColumn;
 		cellResetEnergy = subarray.cellResetEnergy * numActiveSubarrayPerRow * numActiveSubarrayPerColumn;
 		/* for RESET and SET only */
+		// SLC
 		resetDynamicEnergy = writeDynamicEnergy + subarray.resetDynamicEnergy * numActiveSubarrayPerRow * numActiveSubarrayPerColumn;
+		// SLC
 		setDynamicEnergy = writeDynamicEnergy + subarray.setDynamicEnergy * numActiveSubarrayPerRow * numActiveSubarrayPerColumn;
 		/* total write energy */
 		writeDynamicEnergy += subarray.writeDynamicEnergy * numActiveSubarrayPerRow * numActiveSubarrayPerColumn;

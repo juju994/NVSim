@@ -392,6 +392,9 @@ void Result::print() {
 			(bank->mat.subarray.writeLatency) / 8;
 	cout << " - Write Bandwidth = " << TO_BPS(writeBandwidth) << endl;
 
+
+
+
 	cout << "Power:" << endl;
 
 	cout << " -  Read Dynamic Energy = " << TO_JOULE(bank->readDynamicEnergy) << endl;
@@ -421,6 +424,9 @@ void Result::print() {
 													+ bank->mat.subarray.senseAmpMuxLev1.readDynamicEnergy
 													+ bank->mat.subarray.senseAmpMuxLev2.readDynamicEnergy) << endl;
 	cout << "       |--- Precharge Dynamic Energy   = " << TO_JOULE(bank->mat.subarray.precharger.readDynamicEnergy) << endl;
+
+
+
 
 	if (cell->memCellType == PCRAM || cell->memCellType == FBRAM ||
 			(cell->memCellType == memristor && (cell->accessType == CMOS_access || cell->accessType == BJT_access))) {

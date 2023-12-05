@@ -15,15 +15,27 @@ LDFLAGS :=
 # link librarires
 LDLIBS :=
 
+# User-specified output directory, 把编译输出的.o放到output/路径下，输出的.exe文件还是放在根目录下
+OUTPUT_DIR := output/
+
 # construct list of .cpp and their corresponding .o and .d files
 SRC := $(wildcard *.cpp)
 INC := 
 DBG :=
-OBJ := $(SRC:.cpp=.o)
+# OBJ := $(SRC:.cpp=.o)
+OBJ := $(addprefix $(OUTPUT_DIR), $(SRC:.cpp=.o))
 DEP := Makefile.dep
+
+$(shell mkdir -p $(OUTPUT_DIR))
+
+#create_folder:
+#    @if [ ! -d "$(OUTPUT_DIR)" ]; then \
+#        mkdir -p "$(OUTPUT_DIR)"; \
+#    fi
 
 # file disambiguity is achieved via the .PHONY directive
 .PHONY : all clean dbg
+
 
 all : $(target)
 
@@ -34,16 +46,21 @@ $(target) : $(OBJ)
 	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 clean :
-	$(RM) $(target) $(dep_file) $(OBJ)
+	$(RM) $(target) $(DEP) $(OBJ)
 
-.cpp.o :
+$(OUTPUT_DIR)%.o : %.cpp
 	$(CXX) $(CXXFLAGS) $(DBG) $(INC) -c $< -o $@
+#.cpp.o :
+#	$(CXX) $(CXXFLAGS) $(DBG) $(INC) -c $< -o $@
 
 depend $(DEP):
 	@echo Makefile - creating dependencies for: $(SRC)
-	@$(RM) $(DEP)
+#	@$(RM) $(DEP)
 	@$(CXX) -E -MM $(INC) $(SRC) >> $(DEP)
 
 ifeq (,$(findstring clean,$(MAKECMDGOALS)))
 -include $(DEP)
 endif
+
+# clean:
+# 	$(RM) $(DEP)

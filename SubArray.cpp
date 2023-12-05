@@ -770,16 +770,20 @@ void SubArray::CalculatePower() {
 			leakage = 0;                       //TO-DO: cell leaks during read/write operation
 		} else if (cell->memCellType == SLCNAND) {
 			/* Calculate the NAND flash string length, which is the page count per block plus 2 (two select transistors) */
-			int pageCount = inputParameter->flashBlockSize / inputParameter->pageSize;
+			// 计算NAND flash串的长度, 等于每块的页数 + 2(2个选通管)
+			int pageCount = inputParameter->flashBlockSize / inputParameter->pageSize;	// 块的大小除以页的大小得到页数
 			int stringLength = pageCount + 2;
 
 			/* === READ energy === */
 			/* only the selected bitline is charged during the read operation, bitline is charged to Vpre */
+			// 读操作期间只有选择的位线被预充电,预充电至Vpre
 			readDynamicEnergy = (capCellAccess + capBitline + bitlineMux.capForPreviousPowerCalculation)
 					* voltagePrecharge * voltagePrecharge * numColumn;
-			/* tricky thing here!
+			/* tricky thing here!	棘手问题!
 			 * In SLC NAND operation, SSL, GSL, and unselected wordlines in a block are charged to Vpass,
+			 	在SLC NAND的操作中, 块中的SSL, GSL和未选择字线充电到Vpass
 			 * but the selected wordline is not charged, which is totally different from the other cases.
+			 	但是选择的字线没有预充电, 这与其他情况完全不同. 
 			 */
 			rowDecoder.resetDynamicEnergy = rowDecoder.readDynamicEnergy;
 			rowDecoder.setDynamicEnergy = rowDecoder.readDynamicEnergy;
